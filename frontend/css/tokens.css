@@ -1,0 +1,37 @@
+/* FeedbackIQ — Vacío numérico
+   Espacio como estructura. Sin bordes, sin glassmorphism, sin sombras. */
+
+:root {
+  --void: #0B0C10;
+  --ink: #E8E6E1;
+  --mint: #7FD8BE;
+  --amber: #D9A15B;
+  --mute: #8A93A6;
+  --divider: rgba(255, 255, 255, 0.06);
+
+  --font-ui: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.75rem;
+  --space-lg: 3rem;
+  --space-xl: 5rem;
+  --space-2xl: 8rem;
+  --space-3xl: 10rem;
+
+  --read: min(72rem, calc(100vw - 3rem));
+  --narrow: min(40rem, 100%);
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.5rem;
+  --fs-xl: 2.25rem;
+  --fs-hero: clamp(4.5rem, 14vw, 11rem);
+  --fs-kpi: clamp(2rem, 5vw, 3.5rem);
+
+  --lh-tight: 1.05;
+  --lh-body: 1.55;
+}

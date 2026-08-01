@@ -1,0 +1,44 @@
+# Python
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.pyc
+backend/.env
+*.egg-info/
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Exports & uploads
+exports/*.xlsx
+!exports/.gitkeep
+samples/tmp/
+
+# Model weights (descargados una vez; no versionar)
+backend/models/**/model.bin
+backend/models/**/*.bin
+!backend/models/.gitkeep
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+*.swp
+.cache/
+
+# Hugging Face / model caches
+backend/models/**/.cache/
+backend/models/**/*.spm
+backend/models/**/vocab.json
+backend/models/**/shared_vocabulary.json
+backend/models/**/config.json
+backend/models/**/generation_config.json
+backend/models/**/tokenizer_config.json
+backend/models/**/README.md
+*.pyc
+__pycache__/
+.Python
+backend/models/opus-mt-es-en-ct2/

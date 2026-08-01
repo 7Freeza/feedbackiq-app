@@ -1,0 +1,16 @@
+{
+  "name": "feedbackiq",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FeedbackIQ — Excel ingest, exact token counting, optional optimization, structured export + savings analytics",
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c green,cyan \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && .venv/bin/python run.py",
+    "dev:frontend": "cd frontend && npm run dev",
+    "install:all": "cd backend && python -m venv .venv && .venv/bin/pip install -r requirements.txt && cd ../frontend && npm install",
+    "setup": "npm run install:all"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

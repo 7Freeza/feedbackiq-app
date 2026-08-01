@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FeedbackIQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/tokens.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <canvas id="token-field" aria-hidden="true"></canvas>
+
+  <header class="nav" id="nav">
+    <a class="nav__brand" href="#/">Feedback<span>IQ</span></a>
+    <nav class="nav__links" aria-label="Principal">
+      <a class="nav__link is-active" href="#/" data-route="/">Analizar</a>
+      <a class="nav__link" href="#/docs" data-route="/docs">Método</a>
+    </nav>
+  </header>
+
+  <main id="app" class="app"></main>
+
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>
