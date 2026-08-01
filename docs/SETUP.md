@@ -14,8 +14,8 @@ No GPU required. No paid translation API required.
 ## 1. Clone
 
 ```bash
-git clone https://github.com/7Freeza/FeedBackIQ.git
-cd FeedBackIQ
+git clone https://github.com/7Freeza/feedbackiq-app.git
+cd feedbackiq-app
 ```
 
 ---

@@ -96,8 +96,8 @@ Latencia por etapa, distribución de tipos clasificados y tabla multi-modelo (si
 ### Instalar
 
 ```bash
-git clone https://github.com/7Freeza/FeedBackIQ.git
-cd FeedBackIQ
+git clone https://github.com/7Freeza/feedbackiq-app.git
+cd feedbackiq-app
 npm install
 npm run setup
 ```
