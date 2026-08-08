@@ -115,3 +115,27 @@ export async function recalculateAnalytics(payload) {
 export function downloadUrl(filename) {
   return `${BASE}/download/${encodeURIComponent(filename)}`;
 }
+
+/**
+ * Envía un reporte de problema al backend → webhook n8n.
+ * @param {{ mensaje: string, page?: string, email?: string }} body
+ */
+export async function submitReport(body) {
+  const res = await fetchWithTimeout(
+    `${BASE}/report`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    },
+    20_000
+  );
+  if (!res.ok) throw new Error(await parseError(res));
+  return res.json();
+}
+
+export async function reportChannelStatus() {
+  const res = await fetchWithTimeout(`${BASE}/report/status`, {}, 8_000);
+  if (!res.ok) throw new Error(await parseError(res));
+  return res.json();
+}

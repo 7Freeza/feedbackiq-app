@@ -24,6 +24,41 @@
 
   <main id="app" class="app"></main>
 
+  <footer class="report-footer" id="report-footer">
+    <div class="report-footer__inner">
+      <p class="eyebrow">Soporte</p>
+      <h2 class="report-footer__title">¿Encontraste un problema?</h2>
+      <p class="report-footer__lead">Cuéntanos qué falló. Lo clasificamos y lo enviamos al canal de reportes. Si dejas tu correo, te enviamos una guía automática de solución.</p>
+      <form class="report-form" id="report-form" novalidate>
+        <label class="report-form__label" for="report-msg">Mensaje</label>
+        <textarea
+          id="report-msg"
+          class="report-form__textarea"
+          name="mensaje"
+          rows="4"
+          maxlength="4000"
+          minlength="10"
+          required
+          placeholder="Ej. Al subir el Excel de reseñas, la optimización se queda cargando y no devuelve el archivo…"
+        ></textarea>
+        <label class="report-form__label report-form__label--spaced" for="report-email">Correo (opcional)</label>
+        <input
+          type="email"
+          id="report-email"
+          class="report-form__input"
+          name="email"
+          maxlength="254"
+          autocomplete="email"
+          placeholder="para recibir la guía de solución por email"
+        />
+        <div class="report-form__row">
+          <button type="submit" class="btn" id="report-submit">Enviar reporte</button>
+          <p class="report-form__status state state--info" id="report-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </footer>
+
   <script type="module" src="/js/main.js"></script>
 </body>
 </html>

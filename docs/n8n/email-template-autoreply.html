@@ -1,0 +1,101 @@
+<!--
+  FeedbackIQ — plantilla Gmail AUTO-REPLY al usuario (HTML)
+  En n8n → Gmail (segundo nodo, solo si hay email) → Email Type: HTML → Message: Expression
+  Pega TODO el bloque ={{ `...` }} de abajo (una sola expresión).
+
+  Campos esperados (tras code-respuesta-auto.js):
+    asunto_auto, email_usuario, severidad, modulo_probable,
+    texto_original / mensaje, pasos (array), intro_auto, cierre_auto
+-->
+
+={{ (() => {
+  const sev = ($json.severidad || "media").toString();
+  const mod = ($json.modulo_probable || "Sin clasificar").toString();
+  const msg = ($json.texto_original || $json.mensaje || "—").toString();
+  const intro = ($json.intro_auto || "Recibimos tu reporte.").toString();
+  const cierre = ($json.cierre_auto || "").toString();
+  const pasos = Array.isArray($json.pasos) ? $json.pasos : [];
+
+  const sevColor =
+    sev === "critica" ? "#b45309" :
+    sev === "baja" ? "#3f6212" : "#334155";
+
+  const sevBg =
+    sev === "critica" ? "#fff7ed" :
+    sev === "baja" ? "#f7fee7" : "#f8fafc";
+
+  const esc = (s) => String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
+  const pasosHtml = pasos.length
+    ? `<ol style="margin:0;padding-left:1.25rem;font-size:14px;line-height:1.55;color:#0f172a;">
+        ${pasos.map((p) => `<li style="margin-bottom:8px;">${esc(p)}</li>`).join("")}
+       </ol>`
+    : `<p style="font-size:14px;color:#64748b;">Sin pasos específicos.</p>`;
+
+  return `<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="utf-8" /></head>
+<body style="margin:0;padding:0;background:#f1f5f9;font-family:Inter,Segoe UI,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f1f5f9;padding:24px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" style="max-width:560px;background:#ffffff;border-radius:8px;overflow:hidden;">
+          <tr>
+            <td style="padding:20px 24px 12px 24px;border-bottom:1px solid #e2e8f0;">
+              <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#64748b;">FeedbackIQ · Soporte</div>
+              <div style="font-size:18px;font-weight:600;color:#0f172a;margin-top:6px;">Guía de solución</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:16px 24px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td style="padding:10px 12px;background:${sevBg};border-radius:6px;">
+                    <span style="font-size:11px;color:#64748b;text-transform:uppercase;">Severidad</span><br/>
+                    <span style="font-size:15px;font-weight:600;color:${sevColor};">${esc(sev)}</span>
+                  </td>
+                  <td width="12"></td>
+                  <td style="padding:10px 12px;background:#f8fafc;border-radius:6px;">
+                    <span style="font-size:11px;color:#64748b;text-transform:uppercase;">Módulo</span><br/>
+                    <span style="font-size:15px;font-weight:600;color:#0f172a;">${esc(mod)}</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 24px 12px 24px;">
+              <p style="margin:0;font-size:14px;line-height:1.55;color:#0f172a;">${esc(intro)}</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 24px 12px 24px;">
+              <div style="font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Tu mensaje</div>
+              <div style="font-size:14px;line-height:1.55;color:#0f172a;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:14px 16px;white-space:pre-wrap;">${esc(msg)}</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 24px 16px 24px;">
+              <div style="font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Pasos sugeridos</div>
+              ${pasosHtml}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 24px 20px 24px;">
+              <p style="margin:0;font-size:13px;line-height:1.5;color:#475569;">${esc(cierre)}</p>
+              <div style="font-size:12px;color:#94a3b8;margin-top:14px;">
+                Respuesta automática por plantillas · FeedbackIQ
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+})() }}

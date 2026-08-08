@@ -143,7 +143,25 @@ Then run `npm run dev` again.
 
 ---
 
-## 8. Production notes
+## 8. Reportes de problemas (n8n)
+
+El footer de la UI envía reportes a `POST /api/report`, que reenvía a un webhook de n8n.
+
+1. Instala/arranca n8n (Docker) — ver **[N8N_REPORTES.md](N8N_REPORTES.md)**.
+2. Crea el workflow y copia la Production URL del Webhook.
+3. Configura en `backend/.env`:
+
+```env
+N8N_DRY_RUN=false
+N8N_WEBHOOK_URL=http://localhost:5678/webhook/feedbackiq-report
+N8N_WEBHOOK_SECRET=tu-secreto
+```
+
+Sin n8n aún, puedes probar el formulario con `N8N_DRY_RUN=true`.
+
+---
+
+## 9. Production notes
 
 - Keep `UVICORN_WORKERS=1` while jobs are in-memory (`jobs.py`). Multi-worker needs a shared job store (Redis/RQ).
 - Do not commit `backend/models/**/model.bin` or `node_modules` / `.venv`.

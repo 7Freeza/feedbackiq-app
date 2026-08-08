@@ -23,6 +23,18 @@ class Settings(BaseSettings):
     DEFAULT_DAILY_VOLUME: int = 10_000
     TOKENIZER_ENCODING: str = "o200k_base"
 
+    # --- Reportes de problemas → n8n ---
+    # URL completa del Webhook de n8n (ej. http://localhost:5678/webhook/feedbackiq-report)
+    N8N_WEBHOOK_URL: str = ""
+    # Header secreto compartido con n8n (Header Auth). Vacío = sin header extra.
+    N8N_WEBHOOK_SECRET: str = ""
+    # Nombre del header (n8n Header Auth suele usar "Authorization" o un custom)
+    N8N_WEBHOOK_HEADER_NAME: str = "X-FeedbackIQ-Secret"
+    # Timeout al llamar n8n (segundos)
+    N8N_TIMEOUT_SEC: float = 15.0
+    # Si true y no hay URL, el endpoint igual clasifica local y responde ok (modo demo)
+    N8N_DRY_RUN: bool = False
+
     @property
     def export_path(self) -> Path:
         p = Path(self.EXPORT_DIR)

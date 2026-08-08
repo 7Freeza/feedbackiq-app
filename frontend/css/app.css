@@ -639,6 +639,99 @@ table.data .neg {
   font-weight: 500;
 }
 
+/* Footer — reportes de problema (n8n) */
+.report-footer {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: var(--space-3xl) 0 var(--space-2xl);
+  margin-top: var(--space-xl);
+}
+
+.report-footer__inner {
+  width: var(--read);
+  margin: 0 auto;
+}
+
+.report-footer__title {
+  font-size: var(--fs-lg);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-xs);
+}
+
+.report-footer__lead {
+  font-size: var(--fs-sm);
+  color: var(--mute);
+  max-width: 36rem;
+  margin-bottom: var(--space-lg);
+}
+
+.report-form__label {
+  display: block;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: var(--space-xs);
+}
+
+.report-form__label--spaced {
+  margin-top: var(--space-md);
+}
+
+.report-form__textarea,
+.report-form__input {
+  width: 100%;
+  max-width: 40rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--divider);
+  padding: 0.75rem 0;
+  font-family: var(--font-ui);
+  font-size: var(--fs-sm);
+  color: var(--ink);
+  border-radius: 0;
+  outline: none;
+}
+
+.report-form__textarea {
+  resize: vertical;
+  min-height: 6rem;
+}
+
+.report-form__textarea::placeholder,
+.report-form__input::placeholder {
+  color: var(--mute);
+  opacity: 0.7;
+}
+
+.report-form__textarea:focus,
+.report-form__input:focus {
+  border-bottom-color: var(--mint);
+}
+
+.report-form__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.report-form__status {
+  margin: 0;
+  max-width: 28rem;
+}
+
+.report-form__status.is-ok {
+  color: var(--mint);
+}
+
+.report-form__status.is-err {
+  color: var(--amber);
+}
+
 /* Responsive */
 @media (max-width: 640px) {
   .nav {
@@ -653,5 +746,9 @@ table.data .neg {
 
   .kpi-grid {
     gap: var(--space-lg);
+  }
+
+  .report-footer__inner {
+    width: calc(100vw - 2.5rem);
   }
 }

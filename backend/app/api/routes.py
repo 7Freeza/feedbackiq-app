@@ -8,15 +8,16 @@ import tempfile
 import uuid
 from pathlib import Path
 
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 
 from app import __version__
-from app.api.schemas import AnalyticsRecalcRequest, HealthResponse
+from app.api.schemas import AnalyticsRecalcRequest, HealthResponse, ProblemReportRequest
 from app.config import get_settings
 from app.core.analytics import build_extended_analytics
 from app.core.excel_ingest import extract_from_files, validate_upload_meta
 from app.core.jobs import JobRequest, get_job, run_pipeline_isolated, submit_analyze_job
+from app.core.report_service import submit_problem_report
 from app.core.semantic_dedup import encoder_info
 from app.core.tokenizer import DEFAULT_MODEL_PRICING
 from app.core.translator import engine_info
@@ -239,6 +240,37 @@ def job_status(job_id: str):
         )
 
     return {"ok": True, "async": True, **base}
+
+
+@router.post("/report")
+async def problem_report(body: ProblemReportRequest, request: Request):
+    """Recibe un reporte del footer y lo reenvía al webhook de n8n.
+
+    Clasifica localmente por reglas (misma lógica que el nodo Code de n8n)
+    y hace POST al webhook configurado en N8N_WEBHOOK_URL.
+    """
+    result = await submit_problem_report(
+        body.mensaje,
+        page=body.page,
+        user_agent=request.headers.get("user-agent"),
+        email=body.email,
+    )
+    if not result.get("ok"):
+        raise HTTPException(502 if result.get("n8n_status") else 400, detail=result.get("error") or "No se pudo enviar el reporte")
+    return result
+
+
+@router.get("/report/status")
+def report_channel_status():
+    """Indica si el canal n8n está configurado (sin filtrar secretos)."""
+    settings = get_settings()
+    url = (settings.N8N_WEBHOOK_URL or "").strip()
+    return {
+        "configured": bool(url),
+        "dry_run": settings.N8N_DRY_RUN,
+        "webhook_host": url.split("/")[2] if url.startswith("http") and len(url.split("/")) > 2 else None,
+        "has_secret": bool((settings.N8N_WEBHOOK_SECRET or "").strip()),
+    }
 
 
 @router.post("/analytics/recalculate")
