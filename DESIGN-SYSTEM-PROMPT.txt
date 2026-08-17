@@ -1,0 +1,463 @@
+================================================================================
+FEEDBACKIQ — DESIGN SYSTEM PROMPT (portable)
+Para pegar en otra AI y clonar el look & feel, no el producto.
+================================================================================
+
+CÓMO USAR ESTE ARCHIVO
+1. Copia TODO desde la sección «PROMPT LISTO PARA PEGAR» hasta el final.
+2. Reemplaza los placeholders [NOMBRE_PRODUCTO], [TAGLINE], [PÁGINAS], etc.
+3. Pega en Claude / Cursor / GPT / v0 / etc. y pide el frontend.
+4. Si la AI soporta archivos adjuntos, adjunta también tokens.css (bloque al final).
+
+NO copies el HTML de FeedbackIQ tal cual: es un SPA de análisis de tokens.
+Lo valioso es la **estética “Vacío numérico”**: espacio como estructura,
+números enormes, sin glassmorphism, sin sombras, sin bordes de caja.
+
+================================================================================
+PROMPT LISTO PARA PEGAR
+================================================================================
+
+# Rol
+Eres un diseñador de producto + front-end senior. Debes construir el frontend de
+**[NOMBRE_PRODUCTO]** clonando el design system de “FeedbackIQ — Vacío numérico”.
+NO inventes otro estilo. Colores, tipografía, espaciado, componentes y atmósfera
+deben ser equivalentes al sistema de abajo. Adapta solo layout, copy y
+componentes a las necesidades de [NOMBRE_PRODUCTO].
+
+# Producto destino (rellena antes de enviar)
+- Nombre: [NOMBRE_PRODUCTO]
+- Qué hace (1–2 frases): [DESCRIPCIÓN]
+- Tagline / hero: [TAGLINE]
+- Páginas o secciones: [ej. Home, Dashboard, Login, Docs]
+- Stack preferido: [ej. HTML+CSS vanilla | React+Vite | Next.js | Vue]
+- Idioma UI: [es / en]
+- Datos reales o mock: [mock estáticos | API real en …]
+
+# Filosofía visual (OBLIGATORIA — no negociar)
+
+Nombre interno del estilo: **“Vacío numérico”** (numeric void).
+
+Principios duros:
+1. **Espacio = estructura.** Separación vertical grande entre bloques. NO uses
+   cards con borde, cajas grises, paneles glass, ni sombras de elevación.
+2. **Sin glassmorphism. Sin blur. Sin glow. Sin neón.** Fondo sólido oscuro.
+3. **Sin bordes decorativos** en contenedores. Los únicos “bordes” permitidos
+   son: (a) línea inferior sutil en inputs/tablas (`rgba(255,255,255,0.06)`),
+   (b) outline mint en `:focus-visible`.
+4. **Números son el héroe.** KPIs en mono, tamaño brutal, color mint o ink.
+   Un número principal puede ser `clamp(4.5rem, 14vw, 11rem)` y casi recortar
+   el viewport (sensación de instrumento de medición / infinito).
+5. **Poca tinta, mucho aire.** Mucho negro, tipografía clara, acentos mint y
+   amber solo para estado (éxito / warning-error).
+6. **Labels en mayúsculas tracking amplio** (eyebrow): xs, letter-spacing ~0.1–0.14em,
+   color mute.
+7. **Botón primario = bloque mint sólido, texto void, uppercase, sin border-radius
+   redondeado exagerado** (preferible radius 0 o casi 0 — look rectangular limpio).
+8. **Inputs = solo línea inferior**, fondo transparente, mono en números.
+9. Fondo de atmósfera opcional: canvas de puntos grises muy sutiles (opacity ~0.35
+   del canvas), movimiento casi imperceptible, color `rgba(138,147,166,a)`.
+   Sin partículas brillantes. Respetar `prefers-reduced-motion`.
+10. Sensación: laboratorio de datos / terminal de trading minimal / dashboard
+    de métricas de elite. Frío, preciso, calmado. NO SaaS genérico 2024
+    (nada de purple gradients, nada de bento boxes con shadow-xl).
+
+# Paleta EXACTA (CSS custom properties — copiar literal)
+
+```css
+:root {
+  --void: #0B0C10;          /* fondo principal */
+  --ink: #E8E6E1;           /* texto principal (off-white cálido) */
+  --mint: #7FD8BE;          /* acento positivo / brand / KPI hero */
+  --amber: #D9A15B;         /* warning / error / negativo */
+  --mute: #8A93A6;          /* texto secundario, labels, nav inactivo */
+  --divider: rgba(255, 255, 255, 0.06);
+
+  --font-ui: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.75rem;
+  --space-lg: 3rem;
+  --space-xl: 5rem;
+  --space-2xl: 8rem;
+  --space-3xl: 10rem;
+
+  --read: min(72rem, calc(100vw - 3rem));  /* ancho de lectura / layout */
+  --narrow: min(40rem, 100%);
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.5rem;
+  --fs-xl: 2.25rem;
+  --fs-hero: clamp(4.5rem, 14vw, 11rem);
+  --fs-kpi: clamp(2rem, 5vw, 3.5rem);
+
+  --lh-tight: 1.05;
+  --lh-body: 1.55;
+}
+```
+
+Google Fonts:
+```
+Inter 400/500/600 + JetBrains Mono 400/500/600
+https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap
+```
+
+# Tipografía y jerarquía
+
+| Rol              | Fuente        | Tamaño              | Peso | Color   | Extra                          |
+|------------------|---------------|---------------------|------|---------|--------------------------------|
+| Brand nav        | Inter         | fs-md               | 500  | ink     | sufijo brand en mint (600)     |
+| Eyebrow / section| Inter         | fs-xs               | 400  | mute    | UPPERCASE, tracking 0.14em     |
+| Page title (h1)  | Inter         | clamp 1.75–2.75rem  | 500  | ink     | tracking -0.03em, max ~18ch    |
+| Lead             | Inter         | fs-md               | 400  | mute    | max-width ~36rem               |
+| KPI label        | Inter         | fs-xs               | 400  | mute    | UPPERCASE, tracking 0.1em      |
+| KPI value        | JetBrains Mono| fs-kpi / fs-hero    | 500  | mint/ink| tabular-nums, tracking neg.    |
+| Body / lead sm   | Inter         | fs-sm               | 400  | mute/ink|                                |
+| Meta / mono data | JetBrains Mono| fs-sm / xs          | 400  | mute    |                                |
+| Button primary   | Inter         | fs-sm               | 500  | void    | UPPERCASE, tracking 0.04em     |
+| Nav link         | Inter         | fs-sm               | 400  | mute→ink| active/hover = ink             |
+
+Números SIEMPRE con:
+```css
+font-family: var(--font-mono);
+font-variant-numeric: tabular-nums;
+letter-spacing: -0.02em; /* o más negativo en heroes */
+```
+
+# Layout
+
+- Fondo `body` / `html`: `--void`.
+- Contenido principal centrado: `width: var(--read); margin: 0 auto;`
+- Padding vertical generoso: top ~space-xl, bottom ~space-3xl.
+- Nav sticky top, padding horizontal alineado al read-width:
+  `padding: var(--space-md) calc((100vw - min(72rem, calc(100vw - 3rem))) / 2);`
+  Fondo: `linear-gradient(to bottom, var(--void) 60%, transparent)` — sin border-bottom.
+- Brand: `Nombre<span style mint>Sufijo</span>` o palabra clave en mint.
+- Bloques: clase mental `.block` con `margin-bottom: var(--space-2xl)`.
+- Grids KPI: `repeat(auto-fit, minmax(10rem, 1fr))`, gap grande (space-xl / space-lg).
+- Charts (si aplica): grid 1 col mobile, 2 col ≥900px; altura chart ~260–280px.
+- Mobile ≤640px: reduce padding lateral a ~1.25rem; read-width = calc(100vw - 2.5rem).
+
+# Componentes a implementar (mismo lenguaje visual)
+
+## 1. Nav
+- Brand izquierda, links derecha.
+- Sin borde. Links mute; `.is-active` e hover → ink.
+- Transición color 0.2s.
+
+## 2. Hero de página
+```
+[EYEBROW UPPERCASE]
+[Título page-title corto y contundente]
+[Lead mute max 36rem]
+```
+
+## 3. Dropzone / zona de acción principal (si aplica)
+- SIN caja punteada gruesa. Solo título + hint + meta mono mint.
+- Opacity 0.7 en drag. Input file invisible absoluto.
+
+## 4. Fields
+- Label uppercase xs mute.
+- Select/input: transparente, solo border-bottom divider; focus → border mint.
+- Options background void.
+
+## 5. Toggle
+- Track 2.5×1.25rem, fondo rgba(255,255,255,0.08), knob mute → mint al check.
+- Radius 0 (cuadrado/rect), NO pill iOS glossy.
+
+## 6. Buttons
+- `.btn`: bg mint, color void, padding 0.9rem 1.5rem, hover opacity 0.88,
+  disabled opacity 0.35. Sin sombra.
+- `.btn--ghost`: transparente, color mint, sin uppercase forzado, padding horizontal 0.
+
+## 7. KPI / resultado núcleo (firma del diseño)
+```
+[EYEBROW]
+[NÚMERO HERO enorme mint mono — puede desbordar un poco a la izquierda]
+[label uppercase mute debajo]
+
+[grid de 3–4 KPIs]
+  LABEL
+  valor (mint | amber | ink según semántica)
+  sub mono mute opcional
+```
+
+## 8. Tablas
+- th: uppercase xs mute, border-bottom divider.
+- td: mono ink; primera columna puede ser UI font.
+- `.pos` mint, `.neg` amber.
+- Sin zebra, sin box-shadow.
+
+## 9. Row cards / listas
+- Separados solo por border-bottom divider.
+- Meta en mono xs mute; tags mint/amber.
+
+## 10. Estados
+- info → mute
+- error / warning → amber
+- success → mint
+- Skeleton: shimmer suave rgba white 0.03–0.07, sin bordes de card.
+
+## 11. Footer de soporte / form (opcional)
+- Mismo lenguaje: eyebrow, título, lead, textarea/input underline, btn mint.
+
+## 12. Docs / contenido largo
+- p y li en mute; bullets con `·` mint a la izquierda.
+- h2 weight 500, spacing generoso.
+
+# Anti-patrones (PROHIBIDO)
+
+- Tailwind-style “card rounded-2xl shadow-lg border border-white/10 bg-white/5 backdrop-blur”
+- Gradientes púrpura/azul SaaS
+- Iconos coloridos rellenos en cada feature
+- Border-radius grande en botones (pill)
+- Sombras de elevación
+- Más de 2 acentos de color (solo mint + amber sobre void/ink/mute)
+- Inter en números grandes (usar mono)
+- Densidad tipo admin panel viejo (tables apretadas sin aire)
+- Animaciones bounce / confetti / loaders neón
+
+# Detalles de pulido
+
+- `::selection { background: rgba(127, 216, 190, 0.25); color: var(--ink); }`
+- `:focus-visible { outline: 1px solid var(--mint); outline-offset: 3px; }`
+- Scrollbar: 8px, thumb rgba(255,255,255,0.08), track transparent
+- `-webkit-font-smoothing: antialiased`
+- Charts (Chart.js u otro): ejes y labels mute; series mint / ink / amber;
+  grid lines muy tenues (divider). Fondo transparente.
+- Canvas token-field detrás del contenido (z-index 0), app z-index 1,
+  pointer-events: none en canvas.
+
+# Entregable pedido
+
+Construye el frontend completo de [NOMBRE_PRODUCTO] con este design system:
+
+1. Estructura de archivos limpia (tokens.css + base.css + app.css, o equivalente
+   en el stack elegido).
+2. Tokens CSS literales de la paleta de arriba.
+3. UI responsive (desktop-first con cuidado mobile).
+4. Copy en [idioma] acorde al producto (no copies textos de FeedbackIQ).
+5. Componentes necesarios para: [lista de pantallas/flujos].
+6. Si no hay API, usa datos mock creíbles y números grandes en el hero.
+7. Incluye el canvas de puntos sutiles (o un CSS-only fallback estático si no hay JS).
+8. Accesibilidad básica: focus-visible, labels, aria en controles custom.
+
+Al terminar, resume en 5 bullets cómo aplicaste “Vacío numérico” y confirma
+hex de void/ink/mint/amber/mute.
+
+# Referencia visual (descripción de una pantalla real del sistema original)
+
+Pantalla oscura #0B0C10. Nav: “Feedback” en off-white + “IQ” mint; links
+“Analizar / Método” a la derecha en gris. Abajo, eyebrow “RESULTADO NÚCLEO”,
+luego un número monstruoso “1119” en mint mono casi a pantalla completa.
+Debajo, 4 KPIs en fila (tokens originales ink, optimizados mint, tiempo ink,
+costo mint). Botón rectangular mint “DESCARGAR EXCEL”. Cero cards, cero sombras,
+solo tipografía, espacio y un acento mint.
+
+Eso es el norte estético. Reproduce esa atmósfera para [NOMBRE_PRODUCTO].
+
+================================================================================
+FIN DEL PROMPT
+================================================================================
+
+
+================================================================================
+ANEXO A — tokens.css listo para copiar al proyecto destino
+================================================================================
+
+/* Vacío numérico — design tokens (origen: FeedbackIQ) */
+
+:root {
+  --void: #0B0C10;
+  --ink: #E8E6E1;
+  --mint: #7FD8BE;
+  --amber: #D9A15B;
+  --mute: #8A93A6;
+  --divider: rgba(255, 255, 255, 0.06);
+
+  --font-ui: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.75rem;
+  --space-lg: 3rem;
+  --space-xl: 5rem;
+  --space-2xl: 8rem;
+  --space-3xl: 10rem;
+
+  --read: min(72rem, calc(100vw - 3rem));
+  --narrow: min(40rem, 100%);
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.5rem;
+  --fs-xl: 2.25rem;
+  --fs-hero: clamp(4.5rem, 14vw, 11rem);
+  --fs-kpi: clamp(2rem, 5vw, 3.5rem);
+
+  --lh-tight: 1.05;
+  --lh-body: 1.55;
+}
+
+
+================================================================================
+ANEXO B — base.css esencial (reset + atmósfera)
+================================================================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--void);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--void);
+  overflow-x: hidden;
+}
+
+#token-field {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+a { color: inherit; text-decoration: none; }
+
+button, input, select, label { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: none; }
+ul, ol { list-style: none; }
+
+.num, .kpi__value, .mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+:focus-visible {
+  outline: 1px solid var(--mint);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: rgba(127, 216, 190, 0.25);
+  color: var(--ink);
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); }
+
+
+================================================================================
+ANEXO C — snippet canvas de puntos (token-field)
+================================================================================
+
+/**
+ * Campo de puntos sutil. Sin glow, sin neón.
+ * color: rgba(138, 147, 166, alpha)  ← es --mute
+ */
+function initTokenField(canvas) {
+  if (!canvas) return () => {};
+  const ctx = canvas.getContext('2d');
+  let w = 0, h = 0, dots = [], raf = 0, running = true;
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = window.innerWidth; h = window.innerHeight;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.min(Math.max(Math.floor((w * h) / 14000), 40), 160);
+    dots = Array.from({ length: n }, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      r: Math.random() * 0.8 + 0.4,
+      vx: (Math.random() - 0.5) * 0.08,
+      vy: (Math.random() - 0.5) * 0.08,
+      a: Math.random() * 0.25 + 0.08,
+    }));
+  }
+
+  function frame() {
+    if (!running) return;
+    ctx.clearRect(0, 0, w, h);
+    for (const d of dots) {
+      d.x += d.vx; d.y += d.vy;
+      if (d.x < 0) d.x = w; if (d.x > w) d.x = 0;
+      if (d.y < 0) d.y = h; if (d.y > h) d.y = 0;
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(138, 147, 166, ${d.a})`;
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    raf = requestAnimationFrame(frame);
+  }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    resize();
+    for (const d of dots) {
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(138, 147, 166, ${d.a * 0.6})`;
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    return () => {};
+  }
+
+  resize(); frame();
+  window.addEventListener('resize', resize);
+  return () => {
+    running = false;
+    cancelAnimationFrame(raf);
+    window.removeEventListener('resize', resize);
+  };
+}
+
+
+================================================================================
+ANEXO D — cheatsheet de clases mentales (nombres del original)
+================================================================================
+
+.nav / .nav__brand / .nav__link.is-active
+.eyebrow · .page-title · .lead · .block
+.drop / .drop__title / .drop__hint / .drop__meta
+.controls · .field · .toggle / .toggle__track
+.btn · .btn--ghost · .actions
+.core / .core__hero-value (fs-hero mint) · .kpi-grid · .kpi__value--mint|--amber|--ink
+.chart-grid · .chart-wrap · table.data · .row-card
+.state--error (amber) · state--info (mute)
+.report-footer · form underline
+
+Hex quick ref:
+  void  #0B0C10
+  ink   #E8E6E1
+  mint  #7FD8BE
+  amber #D9A15B
+  mute  #8A93A6
+
+Origen: PROYECTOS-AI/FEEDBACKIQ/frontend/css/{tokens,base,app}.css
+Captura de referencia: docs/images/01-resultado-nucleo.png
+================================================================================
